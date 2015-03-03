@@ -27,9 +27,8 @@ while True:
         sender   = op[0]
         #receiver = op[1]
         message  = op[2]
-        if message is None:
-            continue
         msg = message.text
-        print "%s: %s" % (sender.name, msg)
+        print "[%s] %s" % (sender.name, msg)
         if sender != me:
             sender.sendMessage("%s" % msg)
+        #receiver.sendMessage("[%s] %s" % (sender.name, msg))

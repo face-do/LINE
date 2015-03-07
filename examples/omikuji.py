@@ -7,6 +7,9 @@ import getpass
 from line import LineClient, LineGroup, LineContact
 import threading
 from code import interact
+import random
+
+unsei = ["大吉","中吉","吉","小吉","末吉","凶","大凶"]
 
 class LINEbot(threading.Thread):
     def __init__(self, client):
@@ -21,7 +24,8 @@ class LINEbot(threading.Thread):
                 return
             msg = message.text
             print "%s: %s" % (sender.name, msg)
-            sender.sendMessage("%s" % msg)
+            if "おみくじ" in msg:
+                sender.sendMessage("あなたの運勢は %s" % random.choice(unsei))
     def run(self):
         while self.life:
             op_list = []

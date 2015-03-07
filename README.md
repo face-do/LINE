@@ -19,6 +19,21 @@ Screenshot
 
 ![alt_tag](http://3.bp.blogspot.com/-FX3ONLEKBBY/U9xJD8JkJbI/AAAAAAAAF2Q/1E7VXOkvYAI/s1600/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2014-08-02+%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB+10.47.15.png)
 
+Examples
+----------
+sh```
+tmux
+git clone git@github.com:syakesaba/line.git
+cd line
+python example/echobot.py
+# enter PIN from your phone.
+# detach tmux session by pressing "Ctrl+b d"
+```
+
+Note
+----------
+LINE does not accept multiple PC logins.
+Your LINE session running will be destroyed when you gain LINE access with other PC.
 
 Author
 ------

@@ -34,7 +34,8 @@ class LineMessage:
         self.createdTime = datetime.fromtimestamp(message.createdTime/1000)
 
     def __repr__(self):
-        return 'LineMessage (contentType=%s, sender=%s, receiver=%s, msg="%s")' % (
+        return '%s LineMessage (contentType=%s, sender=%s, receiver=%s, msg="%s")' % (
+                    self.createdTime,
                     ContentType._VALUES_TO_NAMES[self.contentType],
                     self.sender,
                     self.receiver,
@@ -133,7 +134,7 @@ class LineBase(object):
                 'PUBLIC': "True",
             }
 
-            self._client.sendMessage(message, seq=1)
+            self._client.sendMessage(message)
 
             return True
         except Exception as e:

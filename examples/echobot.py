@@ -33,7 +33,9 @@ class LINEbot(threading.Thread):
         self.life = 0
 
 if __name__ == "__main__":
-    session_file = "/tmp/LINE.session"
+    from os.path import expanduser
+    home = expanduser("~")
+    session_file = "%s/LINE.session" % home
     com_name = __file__
     session = None
     try:

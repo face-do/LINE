@@ -21,7 +21,7 @@ Screenshot
 
 Examples
 ----------
-sh```
+```sh
 tmux
 git clone git@github.com:syakesaba/line.git
 cd line

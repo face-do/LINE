@@ -447,6 +447,8 @@ class LineClient(LineAPI):
                     logger.info(operation)
 
                 self.revision = max(operation.revision, self.revision)
+        else:
+            self.tokenLogin()
 
     def createContactOrRoomOrGroupByMessage(self, message):
         if message.toType == ToType.USER:

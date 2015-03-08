@@ -29,6 +29,13 @@ from curve import CurveThrift
 from curve.ttypes import TalkException
 from curve.ttypes import ToType, ContentType
 
+from logging import getLogger,StreamHandler,DEBUG
+logger = getLogger(__name__)
+handler = StreamHandler()
+handler.setLevel(DEBUG)
+logger.setLevel(DEBUG)
+logger.addHandler(handler)
+
 class LineAPI(object):
     """This class is a wrapper of LINE API
 
@@ -106,8 +113,8 @@ class LineAPI(object):
         self._headers['X-Line-Access'] = msg.verifier
         self._pinCode = msg.pinCode
 
-        print "Enter PinCode '%s' to your mobile phone in 2 minutes"\
-                % self._pinCode
+        logger.info("Enter PinCode '%s' to your mobile phone in 2 minutes"\
+                % self._pinCode)
 
         j = self._get_json(self.LINE_CERTIFICATE_URL)
         self.verifier = j['result']['verifier']

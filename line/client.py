@@ -19,6 +19,13 @@ from curve.ttypes import TalkException, ToType, OperationType, Provider
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+from logging import getLogger,StreamHandler,DEBUG
+logger = getLogger(__name__)
+handler = StreamHandler()
+handler.setLevel(DEBUG)
+logger.setLevel(DEBUG)
+logger.addHandler(handler)
+
 EMAIL_REGEX = re.compile(r"[^@]+@[^@]+\.[^@]+")
 
 class LineClient(LineAPI):
@@ -436,8 +443,8 @@ class LineClient(LineAPI):
 
                     yield (sender, receiver, message)
                 else:
-                    print "[*] %s" % OT._VALUES_TO_NAMES[operation.type]
-                    print operation
+                    logger.info("[*] %s" % OT._VALUES_TO_NAMES[operation.type])
+                    logger.info(operation)
 
                 self.revision = max(operation.revision, self.revision)
 

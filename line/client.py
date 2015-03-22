@@ -9,7 +9,6 @@
     :license: BSD, see LICENSE for more details.
 """
 import re
-import requests
 import sys
 
 from api import LineAPI
@@ -17,7 +16,7 @@ from models import LineGroup, LineContact, LineRoom, LineMessage
 from curve.ttypes import TalkException, ToType, OperationType, Provider
 
 reload(sys)
-sys.setdefaultencoding("utf-8")
+sys.setdefaultencoding("utf-8")  # @UndefinedVariable
 
 from logging import getLogger,StreamHandler,DEBUG
 logger = getLogger(__name__)
@@ -34,10 +33,10 @@ class LineClient(LineAPI):
     rooms    = []
     groups   = []
 
-    def __init__(self, id=None, password=None, authToken=None, is_mac=True, com_name="carpedm20"):
+    def __init__(self, user_id=None, password=None, authToken=None, is_mac=True, com_name="carpedm20"):
         """Provide a way to communicate with LINE server.
 
-        :param id: `NAVER id` or `LINE email`
+        :param user_id: `NAVER id` or `LINE email`
         :param password: LINE account password
         :param authToken: LINE session key
         :param is_mac: (optional) os setting
@@ -49,7 +48,7 @@ class LineClient(LineAPI):
         Enter PinCode '7390' to your mobile phone in 2 minutes
         """
 
-        if not (authToken or id and password):
+        if not (authToken or user_id and password):
             msg = "id and password or authToken is needed"
             self.raise_error(msg)
 
@@ -74,12 +73,12 @@ class LineClient(LineAPI):
             self.tokenLogin()
             #self.ready()
         else:
-            if EMAIL_REGEX.match(id):
+            if EMAIL_REGEX.match(user_id):
                 self.provider = Provider.LINE # LINE
             else:
                 self.provider = Provider.NAVER_KR # NAVER
 
-            self.id = id
+            self.id = user_id
             self.password = password
             self.is_mac = is_mac
 
@@ -112,28 +111,28 @@ class LineClient(LineAPI):
 
         return None
 
-    def getContactById(self, id):
+    def getContactById(self, user_id):
         """Get a `contact` by id
         
-        :param id: id of a `contact`
+        :param user_id: id of a `contact`
         """
         for contact in self.contacts:
-            if contact.id == id:
+            if contact.id == user_id:
                 return contact
         if self.profile:
-            if self.profile.id == id:
+            if self.profile.id == user_id:
                 return self.profile
 
         return None
 
-    def getContactOrRoomOrGroupById(self, id):
+    def getContactOrRoomOrGroupById(self, room_or_group_id):
         """Get a `contact` or `room` or `group` by its id
 
-        :param id: id of a instance
+        :param room_or_group_id: id of a instance
         """
-        return self.getContactById(id)\
-                or self.getRoomById(id)\
-                or self.getGroupById(id)
+        return self.getContactById(room_or_group_id)\
+                or self.getRoomById(room_or_group_id)\
+                or self.getGroupById(room_or_group_id)
 
     def refreshGroups(self):
         """Refresh groups of LineClient"""
@@ -187,7 +186,7 @@ class LineClient(LineAPI):
                 else:
                     break
 
-    def createGroupWithIds(self, ids=[]):
+    def createGroupWithIds(self, name ,ids=[]):
         """Create a group with contact ids
 
         :param name: name of group
@@ -236,13 +235,13 @@ class LineClient(LineAPI):
 
         return None
 
-    def getGroupById(self, id):
+    def getGroupById(self, group_id):
         """Get a group by id
         
-        :param id: id of a group
+        :param group_id: id of a group
         """
         for group in self.groups:
-            if group.id == id:
+            if group.id == group_id:
                 return group
 
         return None
@@ -316,13 +315,13 @@ class LineClient(LineAPI):
 
                 return None
 
-    def getRoomById(self, id):
+    def getRoomById(self, room_id):
         """Get a room by id
         
-        :param id: id of a room
+        :param room_id: id of a room
         """
         for room in self.rooms:
-            if room.id == id:
+            if room.id == room_id:
                 return room
 
         return None
@@ -361,14 +360,14 @@ class LineClient(LineAPI):
         if self._check_auth():
             self._sendMessage(message, seq)
 
-    def getMessageBox(self, id):
+    def getMessageBox(self, msg_id):
         """Get MessageBox by id
 
-        :param id: `contact` id or `group` id or `room` id
+        :param msg_id: `contact` id or `group` id or `room` id
         """
         if self._check_auth():
             try:
-                messageBoxWrapUp = self._getMessageBoxCompactWrapUp(id)
+                messageBoxWrapUp = self._getMessageBoxCompactWrapUp(msg_id)
 
                 return messageBoxWrapUp.messageBox
             except:
@@ -380,8 +379,8 @@ class LineClient(LineAPI):
         :param messageBox: MessageBox object
         """
         if self._check_auth():
-            id = messageBox.id
-            messages = self._getRecentMessages(id, count)
+            msg_id = messageBox.id
+            messages = self._getRecentMessages(msg_id, count)
         
             return self.getLineMessageFromMessage(messages)
 

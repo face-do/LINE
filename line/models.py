@@ -87,7 +87,7 @@ class LineBase(object):
         except Exception as e:
             raise e
 
-    def sendImage(self, path):
+    def sendImage(self, path, text=""):
         """Send a image
         
         :param path: local path of image to send
@@ -328,7 +328,7 @@ class LineContact(LineBase):
 
         for group in self._client.groups:
             if self.id in group.getMemberIds():
-                groups.append(room)
+                groups.append(group)
 
         return groups
 

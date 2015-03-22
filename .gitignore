@@ -23,3 +23,8 @@ develop-eggs
 
 # Vim
 .*.sw[op]
+
+# eclipse
+.*.pydevproject
+.*.project
+.*.settings

@@ -15,19 +15,15 @@ try:
 except ImportError:
     import json
 
-from thrift.transport import TTransport
-from thrift.transport import TSocket
 from thrift.transport import THttpClient
 from thrift.protocol import TCompactProtocol
 
 import sys
 reload(sys)
-sys.setdefaultencoding("utf-8")
+sys.setdefaultencoding("utf-8")  # @UndefinedVariable
 
 #from curve import CurveThrift
 from curve import CurveThrift
-from curve.ttypes import TalkException
-from curve.ttypes import ToType, ContentType
 
 from logging import getLogger,StreamHandler,DEBUG
 logger = getLogger(__name__)
@@ -192,17 +188,17 @@ class LineAPI(object):
         """Create a chat room"""
         return self._client.createRoom(seq, ids)
 
-    def _getRoom(self, id):
+    def _getRoom(self, room_id):
         """Get a chat room"""
-        return self._client.getRoom(id)
+        return self._client.getRoom(room_id)
 
     def _inviteIntoRoom(self, roomId, contactIds=[]):
         """Invite contacts into room"""
         return self._client.inviteIntoRoom(0, roomId, contactIds)
 
-    def _leaveRoom(self, id):
+    def _leaveRoom(self, room_id):
         """Leave a chat room"""
-        return self._client.leaveRoom(0, id)
+        return self._client.leaveRoom(0, room_id)
 
     def _createGroup(self, name, ids, seq=0):
         """Create a group"""
@@ -236,13 +232,13 @@ class LineAPI(object):
         """Invite contacts into group"""
         return self._client.inviteIntoGroup(seq, groupId, contactIds)
 
-    def _leaveGroup(self, id):
+    def _leaveGroup(self, group_id):
         """Leave a group"""
-        return self._client.leaveGroup(0, id)
+        return self._client.leaveGroup(0, group_id)
 
-    def _getRecentMessages(self, id, count=1):
+    def _getRecentMessages(self, user_id, count=1):
         """Get recent messages from `id`"""
-        return self._client.getRecentMessages(id, count)
+        return self._client.getRecentMessages(user_id, count)
 
     def _sendMessage(self, message, seq=0):
         """Send a message to `id`. `id` could be contact id or group id
@@ -257,9 +253,9 @@ class LineAPI(object):
     def _fetchOperations(self, revision, count=50):
         return self._client.fetchOperations(revision, count)
 
-    def _getMessageBoxCompactWrapUp(self, id):
+    def _getMessageBoxCompactWrapUp(self, user_id):
         try:
-            return self._client.getMessageBoxCompactWrapUp(id)
+            return self._client.getMessageBoxCompactWrapUp(user_id)
         except:
             return None
 

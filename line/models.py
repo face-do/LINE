@@ -95,7 +95,7 @@ class LineBase(object):
         try:
             img = open(path, 'r')
 
-            message = Message(to=self.id, text=text)
+            message = Message(to=self.id, text=None)
             message.contentType = ContentType.IMAGE
             message.contentPreview = img.read().encode('utf-8')
 

@@ -128,6 +128,10 @@ class LineAPI(object):
             self.raise_error(msg)
         #raise Exception("Code is removed because of the request of LINE corporation")
 
+    def get_json(self, url):
+        """Get josn from given url with saved session and headers"""
+        return json.loads(self._session.get(url, headers=self._headers).text)
+
     def _getProfile(self):
         """Get profile information
 
@@ -183,6 +187,34 @@ class LineAPI(object):
             self.raise_error(msg)
 
         return self._client.getContacts(ids)
+
+    def _findAndAddContactsByMid(self, mid, seq=0):
+        """Find and add contacts by Mid"""
+        return self._client.findAndAddContactsByMid(seq, mid)
+
+    def _findContactByUserid(self, userid):
+        """Find contacts by Userid"""
+        return self._client.findContactByUserid(userid)
+
+    def _findAndAddContactsByUserid(self, userid, seq=0):
+        """Find and add contacts by Userid"""
+        return self._client.findAndAddContactsByUserid(seq, userid)
+
+    def _findContactsByPhone(self, phones):
+        """Find contacts by phone"""
+        return self._client.findContactsByPhone(phones)
+
+    def _findAndAddContactsByPhone(self, phones, seq=0):
+        """Find and add contacts by phone"""
+        return self._client.findAndAddContactsByPhone(seq, phones)
+
+    def _findContactsByEmail(self, emails):
+        """Find contacts by email"""
+        return self._client.findContactsByEmail(emails)
+
+    def _findAndAddContactsByEmail(self, emails, seq=0):
+        """Find and add contacts by email"""
+        return self._client.findAndAddContactsByEmail(seq, emails)
 
     def _createRoom(self, ids, seq=0):
         """Create a chat room"""

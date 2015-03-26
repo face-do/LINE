@@ -87,9 +87,18 @@ class LineClient(LineAPI):
 
         self.revision = self._getLastOpRevision()
         self.getProfile()
-        self.refreshGroups()
-        self.refreshContacts()
-        self.refreshActiveRooms()
+
+        try:
+            self.refreshGroups()
+        except: pass
+
+        try:
+            self.refreshContacts()
+        except: pass
+
+        try:
+            self.refreshActiveRooms()
+        except: pass
 
     def getProfile(self):
         """Get `profile` of LINE account"""
@@ -164,6 +173,91 @@ class LineClient(LineAPI):
                 self.contacts.append(LineContact(self, contact))
 
             self.contacts.sort()
+
+    def findAndAddContactByUserid(self, userid):
+        """Find and add a `contact` by userid
+
+        :param userid: user id
+        """
+        if self._check_auth():
+            try:
+                contact = self._findAndAddContactsByUserid(userid)
+            except TalkException as e:
+                self.raise_error(e.reason)
+
+            contact = contact.values()[0]
+
+            for c in self.contacts:
+                if c.id == contact.mid:
+                    self.raise_error("%s already exists" % contact.displayName)
+                    return 
+
+            c = LineContact(self, contact.values()[0])
+            self.contacts.append(c)
+
+            self.contacts.sort()
+            return c
+
+    def _findAndAddContactByPhone(self, phone):
+        """Find and add a `contact` by phone number
+
+        :param phone: phone number (unknown format)
+        """
+        if self._check_auth():
+            try:
+                contact = self._findAndAddContactsByPhone(phone)
+            except TalkException as e:
+                self.raise_error(e.reason)
+
+            contact = contact.values()[0]
+
+            for c in self.contacts:
+                if c.id == contact.mid:
+                    self.raise_error("%s already exists" % contact.displayName)
+                    return 
+
+            c = LineContact(self, contact.values()[0])
+            self.contacts.append(c)
+
+            self.contacts.sort()
+            return c
+
+    def _findAndAddContactByEmail(self, email):
+        """Find and add a `contact` by email
+
+        :param email: email
+        """
+        if self._check_auth():
+            try:
+                contact = self._findAndAddContactsByEmail(email)
+            except TalkException as e:
+                self.raise_error(e.reason)
+
+            contact = contact.values()[0]
+
+            for c in self.contacts:
+                if c.id == contact.mid:
+                    self.raise_error("%s already exists" % contact.displayName)
+                    return 
+
+            c = LineContact(self, contact.values()[0])
+            self.contacts.append(c)
+
+            self.contacts.sort()
+            return c
+
+    def _findContactByUserid(self, userid):
+        """Find a `contact` by userid
+
+        :param userid: user id
+        """
+        if self._check_auth():
+            try:
+                contact = self._findContactByUserid(userid)
+            except TalkException as e:
+                self.raise_error(e.reason)
+
+            return LineContact(self, contact)
 
     def refreshActiveRooms(self):
         """Refresh active chat rooms"""
@@ -439,6 +533,13 @@ class LineClient(LineAPI):
 
                         sender   = self.getContactOrRoomOrGroupById(raw_sender)
                         receiver = self.getContactOrRoomOrGroupById(raw_receiver)
+
+                    if sender is None or receiver is None:
+                        contacts = self._getContacts([raw_sender, raw_receiver])
+                        if contacts:
+                            if len(contacts) == 2:
+                                sender = LineContact(self, contacts[0])
+                                receiver = LineContact(self, contacts[1])
 
                     yield (sender, receiver, message)
                 else:

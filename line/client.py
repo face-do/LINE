@@ -32,6 +32,7 @@ class LineClient(LineAPI):
     contacts = []
     rooms    = []
     groups   = []
+    operations = []
 
     def __init__(self, user_id=None, password=None, authToken=None, is_mac=True, com_name="carpedm20"):
         """Provide a way to communicate with LINE server.
@@ -506,6 +507,7 @@ class LineClient(LineAPI):
                     return
 
             for operation in operations:
+                self.operations.append(operation)
                 if operation.type == OT.END_OF_OPERATION:
                     pass
                 elif operation.type == OT.SEND_MESSAGE:

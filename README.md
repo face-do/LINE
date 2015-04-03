@@ -6,12 +6,37 @@ LINE
 [![PyPi status](https://pypip.in/status/line/badge.svg?style=flat)](https://pypi.python.org/pypi/line)
 [![PyPi license](https://pypip.in/license/line/badge.svg?style=flat)](https://pypi.python.org/pypi/line)
 
-**2014.08.08** Announcement: some codes are removed because of the request of LINE corporation. You can use library only with `authToken` login.
-
 - Documentation : [http://carpedm20.github.io/line/](http://carpedm20.github.io/line/)
 - Developer Mailing List: [Google Group](https://groups.google.com/forum/#!forum/line-python-developer)
 
 *May the LINE be with you...*
+
+
+Update
+------
+
+**2015.03.31**
+
+authToken expiration [issue](https://github.com/carpedm20/LINE/issues/9) solved.
+
+update authToken **automatically**:
+
+    $ pip install line --upgrade
+
+There is nothing to change in your original code.
+
+update authToken **manually**:
+
+    $ pip install line --upgrade
+    $ python
+    >>> from line import LineClient, LineGroup, LineContact
+    >>> client = LineClient("ID", "PASSWORD")
+    >>> client.updateAuthToken() # manual update
+    True
+
+**2014.08.08**
+
+Some codes are removed because of the request of LINE corporation. You can use library only with `authToken` login.
 
 
 Screenshot
@@ -39,5 +64,3 @@ Author
 ------
 
 Taehoon Kim / [@carpedm20](http://carpedm20.github.io/about/)
-
-

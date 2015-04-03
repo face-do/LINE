@@ -1,15 +1,45 @@
 LINE
 ----
 
+|PyPi version| |PyPi downloads| |PyPi status| |PyPi license|
 
-**2014.08.08** Announcement: some codes are removed because of the
-request of LINE corporation. You can use library only with ``authToken``
-login.
-
-The documentation is available at
-`here <http://carpedm20.github.io/line/>`__
+-  Documentation : http://carpedm20.github.io/line/
+-  Developer Mailing List: `Google
+   Group <https://groups.google.com/forum/#!forum/line-python-developer>`__
 
 *May the LINE be with you...*
+
+Update
+------
+
+**2015.03.31**
+
+authToken expiration
+`issue <https://github.com/carpedm20/LINE/issues/9>`__ solved.
+
+update authToken **automatically**:
+
+::
+
+    $ pip install line --upgrade
+
+There is nothing to change in your original code.
+
+update authToken **manually**:
+
+::
+
+    $ pip install line --upgrade
+    $ python
+    >>> from line import LineClient, LineGroup, LineContact
+    >>> client = LineClient("ID", "PASSWORD")
+    >>> client.updateAuthToken() # manual update
+    True
+
+**2014.08.08**
+
+Some codes are removed because of the request of LINE corporation. You
+can use library only with ``authToken`` login.
 
 Screenshot
 ----------

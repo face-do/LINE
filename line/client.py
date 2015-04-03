@@ -47,6 +47,8 @@ class LineClient(LineAPI):
         Enter PinCode '9779' to your mobile phone in 2 minutes
         >>> client = LineClient("carpedm20@gmail.com", "xxxxxxxxxx")
         Enter PinCode '7390' to your mobile phone in 2 minutes
+        >>> client = LineClient(authToken="xxx ... xxx")
+        True
         """
 
         if not (authToken or user_id and password):
@@ -453,7 +455,16 @@ class LineClient(LineAPI):
         :param message: LineMessage instance to send
         """
         if self._check_auth():
-            self._sendMessage(message, seq)
+            try:
+                self._sendMessage(message, seq)
+            except TalkException as e:
+                self.refreshAuthToken()
+                try:
+                    self._sendMessage(message, seq)
+                except Exception as e:
+                    self.raise_error(e)
+
+                    return False
 
     def getMessageBox(self, msg_id):
         """Get MessageBox by id
@@ -502,7 +513,7 @@ class LineClient(LineAPI):
                 return
             except TalkException as e:
                 if e.code == 9:
-                    self.raise_error("user logged in to another machien")
+                    self.raise_error("user logged in to another machine")
                 else:
                     return
 

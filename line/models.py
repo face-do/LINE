@@ -7,6 +7,7 @@
     :license: BSD, see LICENSE for more details.
 """
 import requests
+from time import time
 from datetime import datetime
 from curve.ttypes import Message, ContentType
 
@@ -95,7 +96,7 @@ class LineBase(object):
         try:
             img = open(path, 'r')
 
-            message = Message(to=self.id, text=None)
+            message = Message(to=self.id, text="LINE" + str(time()))
             message.contentType = ContentType.IMAGE
             message.contentPreview = img.read().encode('utf-8')
 
@@ -123,7 +124,7 @@ class LineBase(object):
         try:
             response = requests.get(url, stream=True)
 
-            message = Message(to=self.id, text=None)
+            message = Message(to=self.id, text="LINE" + str(time()))
             message.contentType = ContentType.IMAGE
             message.contentPreview = response.raw.read()
             #message.contentPreview = url.encode('utf-8')
